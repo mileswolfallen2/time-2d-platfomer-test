@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Time Loop Level Editor</title>
+  <style>
+    body { margin: 0; background: #222; color: #fff; font-family: sans-serif; }
+    #toolbar { padding: 10px; background: #333; }
+    canvas { display: block; margin: 0 auto; background: #111; border: 1px solid #555; }
+    button { margin-right: 5px; }
+  </style>
+</head>
+<body>
+  <div id="toolbar">
+    <button onclick="tool='platform'">Platform</button>
+    <button onclick="platforms=[]; draw()">Clear</button>
+    <button onclick="saveLevel()">Save Level</button>
+    <input id="levelName" placeholder="Level Name" />
+  </div>
+  <canvas id="editorCanvas" width="800" height="400"></canvas>
+  <script>
+    const canvas = document.getElementById('editorCanvas');
+    const ctx = canvas.getContext('2d');
+    let tool = 'platform';
+    let platforms = [];
+
+    canvas.addEventListener('click', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = Math.floor(e.clientX - rect.left);
+      const y = Math.floor(e.clientY - rect.top);
+      if (tool === 'platform') {
+        platforms.push({ x: x - 50, y: y, w: 100, h: 10 });
+        draw();
+      }
+    });
+
+    function draw() {
+      ctx.fillStyle = '#111';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = '#555';
+      ctx.fillRect(0, 350, 800, 50);
+
+      ctx.fillStyle = '#777';
+      for (let p of platforms) {
+        ctx.fillRect(p.x, p.y, p.w, p.h);
+      }
+    }
+
+    function saveLevel() {
+      const name = document.getElementById('levelName').value;
+      if (!name) {
+        alert('Please enter a level name!');
+        return;
+      }
+      localStorage.setItem("level_" + name, JSON.stringify(platforms));
+      alert('Level "' + name + '" saved!');
+    }
+
+    draw();
+  </script>
+</body>
+</html>

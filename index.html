@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Time Loop Platformer</title>
+  <style>
+    body { margin: 0; overflow: hidden; background: #222; }
+    canvas { display: block; margin: 0 auto; background: #333; }
+  </style>
+</head>
+<body>
+  <canvas id="game" width="800" height="400"></canvas>
+  <script>
+  const levelName = prompt("Enter level name (or leave blank for default):");
+  const saved = localStorage.getItem("level_" + levelName);
+  window.customPlatforms = saved ? JSON.parse(saved) : null;
+</script>
+<script src="game.js"></script>
+</body>
+</html>
